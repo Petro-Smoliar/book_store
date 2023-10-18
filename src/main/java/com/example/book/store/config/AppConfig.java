@@ -3,28 +3,21 @@ package com.example.book.store.config;
 import java.util.Properties;
 import javax.sql.DataSource;
 import org.apache.commons.dbcp.BasicDataSource;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.Environment;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 
 @Configuration
-@PropertySource("classpath:application.properties")
-@ComponentScan(basePackages = "com.example.book_store")
+@ComponentScan(basePackages = "com.example.book.store")
 public class AppConfig {
-    @Autowired
-    private Environment environment;
-
     @Bean
     public DataSource getDataSource() {
         BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setDriverClassName(environment.getProperty("db.driver"));
-        dataSource.setUrl(environment.getProperty("db.url"));
-        dataSource.setUsername(environment.getProperty("db.username"));
-        dataSource.setPassword(environment.getProperty("db.password"));
+        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/book_store");
+        dataSource.setUsername("root");
+        dataSource.setPassword("Root1235!");
         return dataSource;
     }
 
@@ -34,11 +27,12 @@ public class AppConfig {
         localSessionFactoryBean.setDataSource(getDataSource());
 
         Properties properties = new Properties();
-        properties.put("show_sql", environment.getProperty("hibernate.show_sql"));
-        properties.put("hibernate.hbm2ddl.auto", environment.getProperty("hibernate.hbm2ddl.auto"));
+        properties.put("show_sql", "true");
+        properties.put("hibernate.hbm2ddl.auto", "create-drop");
+        properties.put("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
         localSessionFactoryBean.setHibernateProperties(properties);
 
-        localSessionFactoryBean.setPackagesToScan("com.example.book_store.model");
+        localSessionFactoryBean.setPackagesToScan("com.example.book.store.model");
 
         return localSessionFactoryBean;
     }
