@@ -1,7 +1,8 @@
 package com.example.book.store;
 
+import com.example.book.store.mapper.BookMapper;
 import com.example.book.store.model.Book;
-import com.example.book.store.service.BookService;
+import com.example.book.store.repository.BookRepository;
 import java.math.BigDecimal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -12,7 +13,9 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 public class BookStoreApplication {
     @Autowired
-    private BookService bookService;
+    private BookRepository bookRepository;
+    @Autowired
+    private BookMapper bookMapper;
 
     public static void main(String[] args) {
         SpringApplication.run(BookStoreApplication.class, args);
@@ -26,7 +29,7 @@ public class BookStoreApplication {
             newBook.setPrice(BigDecimal.valueOf(54));
             newBook.setAuthor("mate");
             newBook.setIsbn("ssdd7788");
-            bookService.save(newBook);
+            bookRepository.save(newBook);
         };
     }
 }
