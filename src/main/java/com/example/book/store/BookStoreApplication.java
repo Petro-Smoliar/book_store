@@ -20,16 +20,4 @@ public class BookStoreApplication {
     public static void main(String[] args) {
         SpringApplication.run(BookStoreApplication.class, args);
     }
-
-    @Bean
-    public CommandLineRunner commandLineRunner() {
-        return args -> {
-            Book newBook = new Book();
-            newBook.setTitle("java");
-            newBook.setPrice(BigDecimal.valueOf(54));
-            newBook.setAuthor("mate");
-            newBook.setIsbn("ssdd7788");
-            bookRepository.save(newBook);
-        };
-    }
 }
