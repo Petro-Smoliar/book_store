@@ -9,9 +9,13 @@ import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import lombok.Data;
 import lombok.ToString;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 @Entity
 @Data
+@SQLDelete(sql = "UPDATE books SET is_deleted = true WHERE id=?")
+@Where(clause = "is_deleted=false")
 @Table(name = "books")
 public class Book {
     @Id
@@ -22,10 +26,17 @@ public class Book {
     @Column(nullable = false)
     private String author;
     @ToString.Exclude
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false,
+            unique = true
+    )
     private String isbn;
     @Column(nullable = false)
     private BigDecimal price;
     private String description;
     private String coverImage;
+    @Column(name = "is_deleted",
+            nullable = false,
+            columnDefinition = "BOOLEAN DEFAULT false"
+    )
+    private boolean isDeleted;
 }
