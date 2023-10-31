@@ -4,6 +4,7 @@ import com.example.book.store.dto.BookDto;
 import com.example.book.store.dto.BookSearchParameters;
 import com.example.book.store.dto.CreateBookRequestDto;
 import com.example.book.store.service.BookService;
+import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ public class BookController {
     }
 
     @PostMapping("/books")
-    public BookDto createBook(@RequestBody CreateBookRequestDto bookDto) {
+    public BookDto createBook(@RequestBody @Valid CreateBookRequestDto bookDto) {
         return bookService.save(bookDto);
     }
 
