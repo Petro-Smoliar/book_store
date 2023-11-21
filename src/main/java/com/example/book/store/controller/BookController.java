@@ -1,8 +1,8 @@
 package com.example.book.store.controller;
 
-import com.example.book.store.dto.BookDto;
-import com.example.book.store.dto.BookSearchParameters;
-import com.example.book.store.dto.CreateBookRequestDto;
+import com.example.book.store.dto.books.BookDto;
+import com.example.book.store.dto.books.BookSearchParameters;
+import com.example.book.store.dto.books.CreateBookRequestDto;
 import com.example.book.store.service.BookService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(value = "/api")
 public class BookController {
-    private BookService bookService;
+    private final BookService bookService;
 
     @GetMapping("/books")
     @Operation(summary = "Get all books", description = "Get a list of all available books")
