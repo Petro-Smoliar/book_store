@@ -1,4 +1,4 @@
-package com.example.book.store.annotations;
+package com.example.book.store.validation;
 
 import com.example.book.store.dto.users.UserRegistrationRequestDto;
 import jakarta.validation.ConstraintValidator;

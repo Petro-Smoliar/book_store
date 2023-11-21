@@ -1,6 +1,5 @@
 package com.example.book.store.service.impl;
 
-import com.example.book.store.annotations.FieldMatchValidator;
 import com.example.book.store.dto.users.UserDto;
 import com.example.book.store.dto.users.UserRegistrationRequestDto;
 import com.example.book.store.exception.RegistrationException;
@@ -8,6 +7,7 @@ import com.example.book.store.mapper.UserMapper;
 import com.example.book.store.model.User;
 import com.example.book.store.repository.user.UserRepository;
 import com.example.book.store.service.UserService;
+import com.example.book.store.validation.FieldMatchValidator;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

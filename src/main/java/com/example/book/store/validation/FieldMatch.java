@@ -1,4 +1,4 @@
-package com.example.book.store.annotations;
+package com.example.book.store.validation;
 
 import jakarta.validation.Constraint;
 import java.lang.annotation.Documented;
