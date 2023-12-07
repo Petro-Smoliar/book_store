@@ -1,0 +1,16 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-books_category-table
+      author: Smoliar P
+      changes:
+        - createTable:
+            tableName: books_categories
+            columns:
+              - column:
+                  name: books_id
+                  type: bigint
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: categories_id
+                  type: bigint
