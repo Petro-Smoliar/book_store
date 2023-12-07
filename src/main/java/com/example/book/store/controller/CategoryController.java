@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(value = "/api")
 public class CategoryController {
-
     private final CategoryService categoryService;
     private final BookService bookService;
 
@@ -73,4 +72,3 @@ public class CategoryController {
         return bookService.getBooksByCategoryId(id);
     }
 }
-
