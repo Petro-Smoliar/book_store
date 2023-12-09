@@ -61,10 +61,10 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<BookDtoWithoutCategoryIds> getBooksByCategoryId(Long id) {
-        if (bookRepository.findAllByCategoryId(id).isEmpty()) {
+        if (bookRepository.findAllByCategories_Id(id).isEmpty()) {
             throw new EntityNotFoundException("Not found books by category index: " + id);
         }
-        return bookRepository.findAllByCategoryId(id).stream()
+        return bookRepository.findAllByCategories_Id(id).stream()
                    .map(bookMapper::toDtoWithoutCategories)
                    .toList();
     }
