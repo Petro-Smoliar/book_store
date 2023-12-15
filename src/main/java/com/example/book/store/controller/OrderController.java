@@ -16,13 +16,11 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "order management", description = "Endpoints for managing order")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(value = "/api")
 public class OrderController {
     private final OrderService orderService;
 
@@ -31,7 +29,6 @@ public class OrderController {
             description = "Allows a user to place an order by sending a "
                               + "POST request to /api/orders."
     )
-    @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/orders")
     public OrderDto addOrder(@RequestBody @Valid OrderRequestDto orderRequestDto) {
         return orderService.addOrder(orderRequestDto);
@@ -42,7 +39,6 @@ public class OrderController {
             description = "Allows a user to retrieve their order history by sending a "
                           + "GET request to /api/orders."
     )
-    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/orders")
     public List<Order> getAllOrders() {
         return orderService.getAllOrders();
@@ -64,7 +60,6 @@ public class OrderController {
             description = "Allows a user to retrieve all OrderItems for a specific order by "
                               + "sending a GET request to /api/orders/{orderId}/items."
     )
-    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("api/orders/{orderId}/items")
     public List<OrderItemResponseDto> getListOrderItem(@PathVariable Long orderId) {
         return orderService.getListOrderItem(orderId);

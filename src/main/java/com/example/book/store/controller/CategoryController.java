@@ -16,13 +16,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "Category management", description = "Endpoints for managing category")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(value = "/api")
 public class CategoryController {
     private final CategoryService categoryService;
     private final BookService bookService;
@@ -35,7 +33,6 @@ public class CategoryController {
     }
 
     @Operation(summary = "Retrieve all categories", description = "Requires user role")
-    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/categories")
     public List<CategoryDto> getAll() {
         return categoryService.findAll();
@@ -43,7 +40,6 @@ public class CategoryController {
 
     @Operation(summary = "Retrieve a specific category by its ID",
                description = "Requires user role")
-    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/categories/{id}")
     public CategoryDto getCategoryById(@PathVariable Long id) {
         return categoryService.getById(id);
@@ -66,7 +62,6 @@ public class CategoryController {
 
     @Operation(summary = "Retrieve books by a specific category",
                description = "Requires user role")
-    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/{id}/books")
     public List<BookDtoWithoutCategoryIds> getBooksByCategoryId(@PathVariable Long id) {
         return bookService.getBooksByCategoryId(id);
