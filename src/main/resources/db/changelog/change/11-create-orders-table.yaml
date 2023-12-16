@@ -1,10 +1,10 @@
 databaseChangeLog:
   - changeSet:
-      id: create-book-table
+      id: create-orders-table
       author: Smoliar P
       changes:
         - createTable:
-            tableName: books
+            tableName: orders
             columns:
               - column:
                   name: id
@@ -14,35 +14,32 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: title
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
                   type: varchar(255)
                   constraints:
                     nullable: false
               - column:
-                  name: author
-                  type: varchar(255)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: isbn
-                  type: varchar(255)
-                  constraints:
-                    nullable: false
-                    unique: true
-              - column:
-                  name: price
+                  name: total
                   type: DECIMAL(10, 2)
                   constraints:
                     nullable: false
               - column:
-                  name: description
-                  type: varchar(255)
+                  name: order_date
+                  type: datetime
+                  constraints:
+                    nullable: false
               - column:
-                  name: cover_image
+                  name: shipping_address
                   type: varchar(255)
+                  constraints:
+                    nullable: false
               - column:
                   name: is_deleted
-                  type: BOOLEAN
-                  defaultValueBoolean: false
+                  type: boolean
                   constraints:
                     nullable: false
