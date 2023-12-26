@@ -6,7 +6,9 @@ import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Set;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
+@Accessors(chain = true)
 @Data
 public class CreateBookRequestDto {
     @NotNull

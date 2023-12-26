@@ -1,0 +1,1 @@
+INSERT INTO category (id, name) values (3, "category3");
