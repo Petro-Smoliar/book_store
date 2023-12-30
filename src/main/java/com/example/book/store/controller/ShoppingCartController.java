@@ -3,7 +3,7 @@ package com.example.book.store.controller;
 import com.example.book.store.dto.cartitem.CartItemDto;
 import com.example.book.store.dto.cartitem.CartItemRequestDto;
 import com.example.book.store.dto.cartitem.CartItemRequestUpdateDto;
-import com.example.book.store.model.ShoppingCart;
+import com.example.book.store.dto.shoppingcart.ShoppingCartDto;
 import com.example.book.store.service.CartItemService;
 import com.example.book.store.service.ShoppingCartService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,8 +30,8 @@ public class ShoppingCartController {
             description = "Retrieve the shopping cart associated with the authenticated user."
     )
     @GetMapping("/cart")
-    public ShoppingCart getUserShoppingCart() {
-        return shoppingCartService.getUserShoppingCart();
+    public ShoppingCartDto getUserShoppingCart() {
+        return shoppingCartService.getUserShoppingCartDto();
     }
 
     @Operation(

@@ -17,6 +17,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Set;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -25,6 +27,8 @@ import org.hibernate.annotations.Where;
 @Where(clause = "is_deleted = false")
 @SQLDelete(sql = "UPDATE orders SET is_deleted = TRUE WHERE id = ?")
 @Table(name = "orders")
+@Accessors(chain = true)
+@EqualsAndHashCode(exclude = "orderItems")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

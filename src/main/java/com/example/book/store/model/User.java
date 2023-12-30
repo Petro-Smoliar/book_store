@@ -14,12 +14,14 @@ import jakarta.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.Set;
 import lombok.Data;
+import lombok.experimental.Accessors;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
 @Data
 @Table(name = "users")
+@Accessors(chain = true)
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

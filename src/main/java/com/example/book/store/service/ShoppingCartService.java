@@ -1,7 +1,7 @@
 package com.example.book.store.service;
 
-import com.example.book.store.model.ShoppingCart;
+import com.example.book.store.dto.shoppingcart.ShoppingCartDto;
 
 public interface ShoppingCartService {
-    ShoppingCart getUserShoppingCart();
+    ShoppingCartDto getUserShoppingCartDto();
 }

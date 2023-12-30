@@ -4,7 +4,7 @@ import com.example.book.store.dto.cartitem.CartItemDto;
 import com.example.book.store.dto.cartitem.CartItemRequestDto;
 import com.example.book.store.dto.cartitem.CartItemRequestUpdateDto;
 import com.example.book.store.exception.EntityNotFoundException;
-import com.example.book.store.mapper.CartItemMapper;
+import com.example.book.store.mapper.ShoppingCartMapper;
 import com.example.book.store.model.CartItem;
 import com.example.book.store.model.ShoppingCart;
 import com.example.book.store.repository.shoppingcart.CartItemRepository;
@@ -19,27 +19,27 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CartItemServiceImpl implements CartItemService {
     private final CartItemRepository cartItemRepository;
-    private final CartItemMapper cartItemMapper;
+    private final ShoppingCartMapper shoppingCartMapper;
     private final ShoppingCartRepository shoppingCartRepository;
 
     @Override
     public CartItemDto save(CartItemRequestDto cartItemRequestDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        CartItem newCartItem = cartItemMapper.toModel(cartItemRequestDto);
+        CartItem newCartItem = shoppingCartMapper.toModel(cartItemRequestDto);
         ShoppingCart shoppingCart = shoppingCartRepository.findByUserEmail(
                 authentication.getName()).orElseThrow(() -> new EntityNotFoundException(
                 "Not found shopping cart by username: " + authentication.getName()
             )
         );
         newCartItem.setShoppingCart(shoppingCart);
-        return cartItemMapper.toDto(cartItemRepository.save(newCartItem));
+        return shoppingCartMapper.toDto(cartItemRepository.save(newCartItem));
     }
 
     @Override
     public CartItemDto update(Long cartItemId, CartItemRequestUpdateDto updateDto) {
         CartItem cartItem = getCartItemById(cartItemId);
         cartItem.setQuantity(updateDto.quantity());
-        return cartItemMapper.toDto(cartItemRepository.save(cartItem));
+        return shoppingCartMapper.toDto(cartItemRepository.save(cartItem));
     }
 
     @Override

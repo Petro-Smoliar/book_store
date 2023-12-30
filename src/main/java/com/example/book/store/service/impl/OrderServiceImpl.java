@@ -48,9 +48,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void updateOrderStatus(Long id, Order.Status status) {
-        if (orderRepository.updateOrderStatus(id, status).isEmpty()) {
+        if (orderRepository.findById(id).isEmpty()) {
             throw new EntityNotFoundException("Not found order by id: " + id);
         }
+        Order updateOrder = orderRepository.findById(id).get();
+        updateOrder.setStatus(status);
+        orderRepository.save(updateOrder);
     }
 
     @Override
