@@ -29,7 +29,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class OrderRepositoryTest {
+public class OrderRepositoryIntegrationTest {
     protected static MockMvc mockMvc;
     @Autowired
     private OrderRepository orderRepository;

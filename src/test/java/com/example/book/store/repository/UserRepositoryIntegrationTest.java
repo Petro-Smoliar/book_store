@@ -1,7 +1,8 @@
 package com.example.book.store.repository;
 
-import com.example.book.store.model.ShoppingCart;
-import com.example.book.store.repository.shoppingcart.ShoppingCartRepository;
+import com.example.book.store.model.Role;
+import com.example.book.store.model.User;
+import com.example.book.store.repository.user.UserRepository;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Optional;
@@ -19,9 +20,9 @@ import org.springframework.jdbc.datasource.init.ScriptUtils;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class ShoppingCartRepositoryTest {
+public class UserRepositoryIntegrationTest {
     @Autowired
-    private ShoppingCartRepository shoppingCartRepository;
+    private UserRepository userRepository;
 
     @BeforeAll
     static void beforeAll(
@@ -31,13 +32,12 @@ public class ShoppingCartRepositoryTest {
         try (Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(true);
             ScriptUtils.executeSqlScript(connection,
-                new ClassPathResource(
-                    "database/sql/add/add_books_to_books_table.sql"));
-            ScriptUtils.executeSqlScript(connection,
                 new ClassPathResource("database/sql/add/add_user_to_users_table.sql"));
             ScriptUtils.executeSqlScript(connection,
+                new ClassPathResource("database/sql/add/add_role_to_roles_table.sql"));
+            ScriptUtils.executeSqlScript(connection,
                 new ClassPathResource("database/sql/add/"
-                                          + "add_shopping_cart_to_shopping_carts_table.sql"));
+                                          + "add_user_id_and_role_id_to_user_roles_table.sql"));
         }
     }
 
@@ -47,30 +47,31 @@ public class ShoppingCartRepositoryTest {
     }
 
     @Test
-    void findByUserEmail_ShouldReturnShoppingCartForUser() {
+    void findByEmail_ShouldReturnUserWithRoles() {
         // Given
         String userEmail = "test@user.com";
-
         // When
-        Optional<ShoppingCart> foundShoppingCart =
-                shoppingCartRepository.findByUserEmail(userEmail);
-
+        Optional<User> foundUserOptional = userRepository.findByEmail(userEmail);
         // Then
-        Assertions.assertTrue(foundShoppingCart.isPresent());
-        Assertions.assertEquals(userEmail, foundShoppingCart.get().getUser().getEmail());
+        Assertions.assertTrue(foundUserOptional.isPresent());
+        User foundUser = foundUserOptional.get();
+        Assertions.assertEquals(userEmail, foundUser.getEmail());
+        Assertions.assertFalse(foundUser.getRoles().isEmpty());
+        Assertions.assertEquals(
+                Role.RoleName.USER,
+                foundUser.getRoles().iterator().next().getName());
     }
 
     @Test
-    void findByUserEmail_ShouldNotReturnShoppingCartForOtherUser() {
+    void findByEmail_ShouldReturnEmptyOptionalForNonexistentEmail() {
         // Given
-        String userEmail = "test@example.com";
+        String nonexistentEmail = "nonexistent@example.com";
 
         // When
-        Optional<ShoppingCart> foundShoppingCart =
-                shoppingCartRepository.findByUserEmail(userEmail);
+        Optional<User> foundUserOptional = userRepository.findByEmail(nonexistentEmail);
 
         // Then
-        Assertions.assertTrue(foundShoppingCart.isEmpty());
+        Assertions.assertTrue(foundUserOptional.isEmpty());
     }
 
     @SneakyThrows
@@ -80,11 +81,9 @@ public class ShoppingCartRepositoryTest {
             ScriptUtils.executeSqlScript(connection,
                 new ClassPathResource("database/sql/remove/remove_all_from_users_table.sql"));
             ScriptUtils.executeSqlScript(connection,
-                new ClassPathResource(
-                    "database/sql/remove/remove_books_to_books_table.sql"));
+                new ClassPathResource("database/sql/remove/remove_all_from_user_roles_table.sql"));
             ScriptUtils.executeSqlScript(connection,
-                new ClassPathResource(
-                    "database/sql/remove/remove_all_from_shopping_cart_table.sql"));
+                new ClassPathResource("database/sql/remove/remove_all_from_roles_table.sql"));
         }
     }
 }
