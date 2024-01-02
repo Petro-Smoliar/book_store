@@ -12,10 +12,14 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import java.util.Set;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
 @Entity
 @Data
 @Table(name = "shopping_carts")
+@Accessors(chain = true)
+@EqualsAndHashCode(exclude = "cartItems")
 public class ShoppingCart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,6 +1,8 @@
 package com.example.book.store.service.impl;
 
+import com.example.book.store.dto.shoppingcart.ShoppingCartDto;
 import com.example.book.store.exception.EntityNotFoundException;
+import com.example.book.store.mapper.ShoppingCartMapper;
 import com.example.book.store.model.ShoppingCart;
 import com.example.book.store.repository.shoppingcart.ShoppingCartRepository;
 import com.example.book.store.service.ShoppingCartService;
@@ -13,12 +15,14 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ShoppingCartServiceImpl implements ShoppingCartService {
     private final ShoppingCartRepository shoppingCartRepository;
+    private final ShoppingCartMapper shoppingCartMapper;
 
     @Override
-    public ShoppingCart getUserShoppingCart() {
+    public ShoppingCartDto getUserShoppingCartDto() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return shoppingCartRepository.findByUserEmail(authentication.getName())
+        ShoppingCart shoppingCart = shoppingCartRepository.findByUserEmail(authentication.getName())
                    .orElseThrow(() -> new EntityNotFoundException(
                        "Not found shopping cart by username: " + authentication.getName()));
+        return shoppingCartMapper.toShoppingCartDto(shoppingCart);
     }
 }

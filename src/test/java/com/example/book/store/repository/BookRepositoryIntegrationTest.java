@@ -12,7 +12,7 @@ import org.springframework.test.context.jdbc.Sql;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class BookRepositoryTest {
+public class BookRepositoryIntegrationTest {
     @Autowired
     private BookRepository bookRepository;
 

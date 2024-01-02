@@ -1,0 +1,1 @@
+UPDATE cart_items SET quantity = 4 WHERE id = 1;

@@ -9,15 +9,18 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+import java.util.Objects;
 import lombok.Data;
+import lombok.experimental.Accessors;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 @Data
 @Entity
 @Where(clause = "is_deleted = false")
-@SQLDelete(sql = "UPDATE orders SET is_deleted = TRUE WHERE id = ?")
+@SQLDelete(sql = "UPDATE cart_items SET is_deleted = TRUE WHERE id = ?")
 @Table(name = "cart_items")
+@Accessors(chain = true)
 public class CartItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,4 +37,9 @@ public class CartItem {
     private int quantity;
     @Column(name = "is_deleted")
     private boolean deleted = false;
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(book, quantity);
+    }
 }
