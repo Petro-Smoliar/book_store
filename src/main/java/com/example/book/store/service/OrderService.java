@@ -9,7 +9,7 @@ import java.util.List;
 public interface OrderService {
     OrderDto addOrder(OrderRequestDto orderRequestDto);
 
-    List<Order> getAllOrders();
+    List<OrderDto> getAllOrders();
 
     void updateOrderStatus(Long id, Order.Status status);
 

@@ -12,8 +12,10 @@ import com.example.book.store.dto.cartitem.CartItemRequestDto;
 import com.example.book.store.dto.cartitem.CartItemRequestUpdateDto;
 import com.example.book.store.exception.EntityNotFoundException;
 import com.example.book.store.mapper.ShoppingCartMapper;
+import com.example.book.store.model.Book;
 import com.example.book.store.model.CartItem;
 import com.example.book.store.model.ShoppingCart;
+import com.example.book.store.repository.book.BookRepository;
 import com.example.book.store.repository.shoppingcart.CartItemRepository;
 import com.example.book.store.repository.shoppingcart.ShoppingCartRepository;
 import com.example.book.store.service.impl.CartItemServiceImpl;
@@ -34,6 +36,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 public class CartItemServiceTest {
     @Mock
     private CartItemRepository cartItemRepository;
+    @Mock
+    private BookRepository bookRepository;
 
     @Mock
     private ShoppingCartMapper shoppingCartMapper;
@@ -58,6 +62,8 @@ public class CartItemServiceTest {
         SecurityContextHolder.setContext(securityContext);
         CartItemRequestDto cartItemRequestDto = new CartItemRequestDto(1L, 12L);
         when(shoppingCartMapper.toModel(cartItemRequestDto)).thenReturn(newCartItem);
+        when(bookRepository.findById(cartItemRequestDto.bookId()))
+                .thenReturn(Optional.of(new Book().setId(1L)));
         ShoppingCart shoppingCart = new ShoppingCart();
         when(shoppingCartRepository.findByUserEmail("testUser"))
                 .thenReturn(Optional.of(shoppingCart));

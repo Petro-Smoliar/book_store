@@ -17,6 +17,7 @@ import com.example.book.store.model.OrderItem;
 import com.example.book.store.model.ShoppingCart;
 import com.example.book.store.model.User;
 import com.example.book.store.repository.order.OrderRepository;
+import com.example.book.store.repository.shoppingcart.CartItemRepository;
 import com.example.book.store.repository.shoppingcart.ShoppingCartRepository;
 import com.example.book.store.service.impl.OrderServiceImpl;
 import java.math.BigDecimal;
@@ -43,13 +44,12 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 public class OrderServiceTest {
     @Mock
     private OrderRepository orderRepository;
-
     @Mock
     private ShoppingCartRepository shoppingCartRepository;
-
     @Mock
     private OrderMapper orderMapper;
-
+    @Mock
+    private CartItemRepository cartItemRepository;
     @InjectMocks
     private OrderServiceImpl orderService;
 
@@ -97,14 +97,15 @@ public class OrderServiceTest {
         // Given
         Authentication authentication = Mockito.mock(Authentication.class);
         SecurityContextHolder.setContext(createSecurityContext(authentication));
-        List<Order> expected = Arrays.asList(createOrder(), createOrder());
+        List<Order> orders = Arrays.asList(createOrder(), createOrder());
         Mockito.when(orderRepository.findAllByUserEmail(authentication.getName()))
-                .thenReturn(expected);
+                .thenReturn(orders);
+        Mockito.when(orderMapper.toOrderDto(any(Order.class))).thenReturn(new OrderDto());
         // When
-        List<Order> actual = orderService.getAllOrders();
+        List<OrderDto> actual = orderService.getAllOrders();
         // Then
         Assertions.assertNotNull(actual);
-        Assertions.assertEquals(expected, actual);
+        Assertions.assertEquals(2, actual.size());
         Mockito.verify(orderRepository, Mockito.times(1))
                 .findAllByUserEmail(authentication.getName());
     }

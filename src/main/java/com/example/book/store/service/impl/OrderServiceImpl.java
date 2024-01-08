@@ -10,6 +10,7 @@ import com.example.book.store.model.Order;
 import com.example.book.store.model.OrderItem;
 import com.example.book.store.model.ShoppingCart;
 import com.example.book.store.repository.order.OrderRepository;
+import com.example.book.store.repository.shoppingcart.CartItemRepository;
 import com.example.book.store.repository.shoppingcart.ShoppingCartRepository;
 import com.example.book.store.service.OrderService;
 import java.math.BigDecimal;
@@ -28,22 +29,29 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final ShoppingCartRepository shoppingCartRepository;
     private final OrderMapper orderMapper;
+    private final CartItemRepository cartItemRepository;
 
     @Override
     public OrderDto addOrder(OrderRequestDto orderRequestDto) {
         ShoppingCart shoppingCart = getUserShoppingCart();
+        if (shoppingCart.getCartItems().isEmpty()) {
+            return new OrderDto();
+        }
         Order newOrder = new Order();
         newOrder.setUser(shoppingCart.getUser());
         newOrder.setOrderItems(toSetOrderItem(shoppingCart.getCartItems(), newOrder));
         newOrder.setTotal(getTotal(newOrder.getOrderItems()));
         newOrder.setShippingAddress(orderRequestDto.shippingAddress());
+        clearCart(shoppingCart);
         return orderMapper.toOrderDto(orderRepository.save(newOrder));
     }
 
     @Override
-    public List<Order> getAllOrders() {
+    public List<OrderDto> getAllOrders() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return orderRepository.findAllByUserEmail(authentication.getName());
+        return orderRepository.findAllByUserEmail(authentication.getName()).stream()
+                    .map(orderMapper::toOrderDto)
+                    .toList();
     }
 
     @Override
@@ -93,5 +101,12 @@ public class OrderServiceImpl implements OrderService {
                    .map(orderItem -> orderItem.getPrice().multiply(
                        BigDecimal.valueOf(orderItem.getQuantity())))
                    .reduce(BigDecimal.ZERO,BigDecimal::add);
+    }
+
+    private void clearCart(ShoppingCart shoppingCart) {
+        List<CartItem> cartItems = shoppingCart.getCartItems().stream()
+                                       .map(cartItem -> cartItem.setDeleted(true))
+                                       .toList();
+        cartItemRepository.saveAll(cartItems);
     }
 }

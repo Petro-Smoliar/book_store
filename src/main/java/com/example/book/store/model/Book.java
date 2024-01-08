@@ -47,7 +47,7 @@ public class Book {
             columnDefinition = "BOOLEAN DEFAULT false"
     )
     private boolean isDeleted;
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "books_categories",
             joinColumns = @JoinColumn(name = "books_id"),

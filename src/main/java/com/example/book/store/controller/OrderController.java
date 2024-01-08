@@ -3,7 +3,7 @@ package com.example.book.store.controller;
 import com.example.book.store.dto.order.OrderDto;
 import com.example.book.store.dto.order.OrderItemResponseDto;
 import com.example.book.store.dto.order.OrderRequestDto;
-import com.example.book.store.model.Order;
+import com.example.book.store.dto.order.StatusDto;
 import com.example.book.store.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -40,7 +40,7 @@ public class OrderController {
                           + "GET request to /api/orders."
     )
     @GetMapping("/orders")
-    public List<Order> getAllOrders() {
+    public List<OrderDto> getAllOrders() {
         return orderService.getAllOrders();
     }
 
@@ -51,8 +51,8 @@ public class OrderController {
     )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PatchMapping("/orders/{id}")
-    public void updateOrderStatus(@PathVariable Long id, @RequestBody @Valid Order.Status status) {
-        orderService.updateOrderStatus(id, status);
+    public void updateOrderStatus(@PathVariable Long id, @RequestBody @Valid StatusDto status) {
+        orderService.updateOrderStatus(id, status.status());
     }
 
     @Operation(
@@ -60,7 +60,7 @@ public class OrderController {
             description = "Allows a user to retrieve all OrderItems for a specific order by "
                               + "sending a GET request to /api/orders/{orderId}/items."
     )
-    @GetMapping("api/orders/{orderId}/items")
+    @GetMapping("orders/{orderId}/items")
     public List<OrderItemResponseDto> getListOrderItem(@PathVariable Long orderId) {
         return orderService.getListOrderItem(orderId);
     }
