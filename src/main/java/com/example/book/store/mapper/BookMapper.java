@@ -4,6 +4,7 @@ import com.example.book.store.config.MapperConfig;
 import com.example.book.store.dto.books.BookDto;
 import com.example.book.store.dto.books.BookDtoWithoutCategoryIds;
 import com.example.book.store.dto.books.CreateBookRequestDto;
+import com.example.book.store.dto.category.ResponseRequestCategoryDto;
 import com.example.book.store.model.Book;
 import com.example.book.store.model.Category;
 import java.util.stream.Collectors;
@@ -22,6 +23,13 @@ public interface BookMapper {
     @AfterMapping
     default void setCategoryIds(@MappingTarget BookDto bookDto, Book book) {
         bookDto.setCategories(book.getCategories().stream()
+                                  .map(c -> new ResponseRequestCategoryDto(c.getId()))
+                                  .collect(Collectors.toSet()));
+    }
+
+    @AfterMapping
+    default void setCategoryIdsToModel(@MappingTarget Book book, BookDto bookDto) {
+        book.setCategories(bookDto.getCategories().stream()
                                   .map(c -> new Category(c.getId()))
                                   .collect(Collectors.toSet()));
     }

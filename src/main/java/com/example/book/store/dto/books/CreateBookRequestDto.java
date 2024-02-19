@@ -1,6 +1,6 @@
 package com.example.book.store.dto.books;
 
-import com.example.book.store.model.Category;
+import com.example.book.store.dto.category.ResponseRequestCategoryDto;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
@@ -22,5 +22,5 @@ public class CreateBookRequestDto {
     private BigDecimal price;
     private String description;
     private String coverImage;
-    private Set<Category> categories;
+    private Set<ResponseRequestCategoryDto> categories;
 }

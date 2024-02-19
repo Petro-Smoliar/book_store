@@ -1,6 +1,6 @@
 package com.example.book.store.dto.books;
 
-import com.example.book.store.model.Category;
+import com.example.book.store.dto.category.ResponseRequestCategoryDto;
 import java.math.BigDecimal;
 import java.util.Set;
 import lombok.Data;
@@ -16,5 +16,5 @@ public class BookDto {
     private String isbn;
     private String description;
     private String coverImage;
-    private Set<Category> categories;
+    private Set<ResponseRequestCategoryDto> categories;
 }

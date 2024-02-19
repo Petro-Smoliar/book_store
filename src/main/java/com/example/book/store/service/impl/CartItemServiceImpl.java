@@ -5,8 +5,10 @@ import com.example.book.store.dto.cartitem.CartItemRequestDto;
 import com.example.book.store.dto.cartitem.CartItemRequestUpdateDto;
 import com.example.book.store.exception.EntityNotFoundException;
 import com.example.book.store.mapper.ShoppingCartMapper;
+import com.example.book.store.model.Book;
 import com.example.book.store.model.CartItem;
 import com.example.book.store.model.ShoppingCart;
+import com.example.book.store.repository.book.BookRepository;
 import com.example.book.store.repository.shoppingcart.CartItemRepository;
 import com.example.book.store.repository.shoppingcart.ShoppingCartRepository;
 import com.example.book.store.service.CartItemService;
@@ -21,6 +23,7 @@ public class CartItemServiceImpl implements CartItemService {
     private final CartItemRepository cartItemRepository;
     private final ShoppingCartMapper shoppingCartMapper;
     private final ShoppingCartRepository shoppingCartRepository;
+    private final BookRepository bookRepository;
 
     @Override
     public CartItemDto save(CartItemRequestDto cartItemRequestDto) {
@@ -31,6 +34,11 @@ public class CartItemServiceImpl implements CartItemService {
                 "Not found shopping cart by username: " + authentication.getName()
             )
         );
+        Book book = bookRepository.findById(cartItemRequestDto.bookId())
+                        .orElseThrow(
+                            () -> new EntityNotFoundException("Not found book by id: "
+                                                                  + cartItemRequestDto.bookId()));
+        newCartItem.setBook(book);
         newCartItem.setShoppingCart(shoppingCart);
         return shoppingCartMapper.toDto(cartItemRepository.save(newCartItem));
     }

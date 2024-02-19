@@ -23,6 +23,7 @@ public interface ShoppingCartMapper {
     CartItem toModel(CartItemRequestDto cartItemRequestDto);
 
     @Mapping(target = "bookId", source = "cartItem.book.id")
+    @Mapping(target = "bookTitle", source = "cartItem.book.title")
     CartItemDto toDto(CartItem cartItem);
 
     @Named("bookFromId")
